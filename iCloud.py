@@ -13,6 +13,7 @@
 import httplib2
 
 import json, uuid, hashlib, sys
+import logging
 
 # Available both for Python 2.x and 3.x (tested on 2.7, 2.6 and 3.3)
 if sys.version_info >= (3,0,0): from http.cookies import SimpleCookie
@@ -181,7 +182,9 @@ class iCloud():
 			"Cookie": self.__prepare_cookies()
 		}, body = json.dumps(authDict))
 
+
 		jdata = json.loads(data.decode('utf-8'))
+		self.log.debug(jdata)
 
 		if "instance" not in jdata:
 			raise iCloudException("wrong login data format")
@@ -220,11 +223,13 @@ class iCloud():
 			"Referer": "https://www.icloud.com",
 			"Cookie": self.__prepare_cookies()
 		})
+		
 
 		if "set-cookie" in resp:
 			self.__update_cookies(resp["set-cookie"])
 
 		jdata = json.loads(data.decode('utf-8'))
+		self.log.debug('Validate response: %s' % jdata)
 
 		if "instance" not in jdata:
 			raise iCloudException("wrong validate data format")
@@ -234,14 +239,16 @@ class iCloud():
 	# Get buildNuber and generate clientID
 	def __init__(self, login, password):
 		self.http = httplib2.Http()
+		self.log = logging.getLogger(__name__)
 
 		self.clientBuildNumber = "1P24"
 		self.clientId = str(uuid.uuid1()).upper()
 
 		self.login = login
 		self.password = password
+		#self.cookies['X-APPLE-WEBAUTH-TOKEN'] = 'v=2:t=AQAAAABSaGCJCHZnkGwmEM29hM85dUmDlz8feRo~'
 
-		self.__validate()
+		#self.__validate()
 
 """ 
 USAGE EXAMPLE
