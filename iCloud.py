@@ -3,11 +3,11 @@
 # Made by Vladimir Smirnov (vladimir@smirnov.im)
 # http://www.mindcollapse.com/
 
-# WARNING! 
+# WARNING!
 # This code could be used for educational purposes only.
 # I.e. you should not use this code in any testing or production environments,
 # otherwise you may violate Apple iCloud Terms and Condition and the Exodus 20:15 "Thou shalt not steal".
-# The author is not responsible for any violation of this simple and clear rules. 
+# The author is not responsible for any violation of this simple and clear rules.
 
 # Depends on http://pypi.python.org/pypi/httplib2
 import httplib2
@@ -22,7 +22,7 @@ else: from Cookie import SimpleCookie
 class iCloudException(Exception):
     def __init__(self, value):
         self.value = value
-    
+
     def __str__(self):
         return repr(self.value)
 
@@ -140,7 +140,7 @@ class iCloud():
             callURL = self.urls["fmi"].format(self.webservices["findme"]["url"], self.dsInfo["dsid"], self.checksum)
         elif request == "getCalendarEvents":
             callURL = self.urls["get_calendar_events"].format(self.webservices["calendar"]["url"], self.clientBuildNumber, self.clientId, self.dsInfo["dsid"], params["to"], self.checksum, params["from"])
-        
+
         else: raise iCloudException("wrong call request")
 
         if callPayload != "": method = "POST"
@@ -158,12 +158,12 @@ class iCloud():
             raise iCloudException(request + " did not suceed")
 
         try: return json.loads(data.decode('utf-8'))
-        except (ValueError): return {} 
+        except (ValueError): return {}
 
     # Login to the iCloud
     # Use rememberMe=True if you need long term login
-    # You should consider storing self.cookies somewhere 
-    # using serialization/deserialization if you need real long-time sessions 
+    # You should consider storing self.cookies somewhere
+    # using serialization/deserialization if you need real long-time sessions
     def authenticate(self, rememberMe=False):
         authURL = self.urls["authenticate"].format(self.clientBuildNumber, self.clientId)
 
@@ -223,7 +223,7 @@ class iCloud():
             "Referer": "https://www.icloud.com",
             "Cookie": self.__prepare_cookies()
         })
-        
+
 
         if "set-cookie" in resp:
             self.__update_cookies(resp["set-cookie"])
@@ -250,7 +250,7 @@ class iCloud():
 
         #self.__validate()
 
-""" 
+"""
 USAGE EXAMPLE
 testCloud = iCloud(login="email@icloud.com", password="123456")
 testCloud.authenticate()
