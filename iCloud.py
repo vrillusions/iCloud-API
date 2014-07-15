@@ -246,6 +246,7 @@ class iCloud():
 
         self.login = login
         self.password = password
+        self.instance = ''
         #self.cookies['X-APPLE-WEBAUTH-TOKEN'] = 'v=2:t=AQAAAABSaGCJCHZnkGwmEM29hM85dUmDlz8feRo~'
 
         #self.__validate()
